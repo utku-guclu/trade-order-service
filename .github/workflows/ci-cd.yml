@@ -60,6 +60,12 @@ jobs:
         run: |
           docker build -t trade-order-service .
 
+      - name: Push Docker image to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+          docker tag trade-order-service ${{ secrets.DOCKER_HUB_USERNAME }}/trade-order-service
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/trade-order-service
+
       - name: Deploy to EC2
         run: |
           # Save the SSH private key to a file
@@ -69,5 +75,6 @@ jobs:
           # Stop and remove the existing container (if any)
           ssh -o StrictHostKeyChecking=no -i trade-order-service.pem ubuntu@${{ secrets.EC2_IP }} "docker stop trade-order-service || true && docker rm trade-order-service || true"
 
-          # Deploy the new container
-          ssh -o StrictHostKeyChecking=no -i trade-order-service.pem ubuntu@${{ secrets.EC2_IP }} "docker run -d -p 80:80 --name trade-order-service trade-order-service"
+          # Pull the Docker image and deploy the new container
+          ssh -o StrictHostKeyChecking=no -i trade-order-service.pem ubuntu@${{ secrets.EC2_IP }} "docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/trade-order-service"
+          ssh -o StrictHostKeyChecking=no -i trade-order-service.pem ubuntu@${{ secrets.EC2_IP }} "docker run -d -p 80:80 --name trade-order-service ${{ secrets.DOCKER_HUB_USERNAME }}/trade-order-service"
