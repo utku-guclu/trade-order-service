@@ -29,6 +29,13 @@ jobs:
         run: echo "PYTHONPATH=$PWD" >> $GITHUB_ENV
 
       - name: Run tests
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          ALGORITHM: ${{ secrets.ALGORITHM }}
+          BASE_URL: ${{ secrets.BASE_URL }}
+          DEV: ${{ secrets.DEV }}
+          TESTING: true
         run: |
           pytest
 
