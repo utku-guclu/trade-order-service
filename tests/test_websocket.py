@@ -12,7 +12,7 @@ if os.getenv("DEV") != "true":
 
 # Function to get a JWT token
 def get_access_token(username: str, password: str):
-    url = f"http://{BASE_URL}/token"
+    url = f"http://3.86.149.73/token"
     print(f"Attempting to connect to: {url}")
     response = requests.post(url, data={"username": username, "password": password})
     
