@@ -7,12 +7,14 @@ from fastapi.testclient import TestClient
 
 # BaseURL for development and testing
 BASE_URL = os.getenv("BASE_URL", "localhost:8000")
-if os.getenv("DEV") != "true": 
-    BASE_URL = "3.86.149.73"
+if os.getenv("DEV") == "true": 
+    BASE_URL = "localhost:8000"
 
 # Function to get a JWT token
 def get_access_token(username: str, password: str):
-    url = f"http://3.86.149.73/token"
+    print(f"Using BASE_URL: {BASE_URL}")
+    print(f"Using username: {username}, password: {password}")
+    url = f"http://{BASE_URL}/token"
     print(f"Attempting to connect to: {url}")
     response = requests.post(url, data={"username": username, "password": password})
     
