@@ -26,7 +26,7 @@ This is a simple backend service that exposes REST APIs for managing trade order
 ### Local Development
 1. Clone the repository:
    ```bash
-   git clone https://github.com/<your-username>/trade-order-service.git
+   git clone https://github.com/utku-guclu/trade-order-service.git
    cd trade-order-service
    ```
 2. Install dependencies:
