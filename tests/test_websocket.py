@@ -12,9 +12,12 @@ if os.getenv("DEV") == "true":
 
 # Function to get a JWT token
 def get_access_token(username: str, password: str):
-    print(f"🚀 Using BASE_URL: {BASE_URL}")  # Debugging
+    if not BASE_URL:
+        raise Exception("❌ BASE_URL is empty! Make sure it's set correctly.")
+
+    print(f"🚀 Using BASE_URL: {BASE_URL}") 
     url = f"http://{BASE_URL}/token"
-    print(f"🌐 Attempting to connect to: {url}")  # 
+    print(f"🌐 Attempting to connect to: {url}")  
     
     response = requests.post(url, data={"username": username, "password": password})
     
