@@ -1,10 +1,13 @@
 # Import SQLAlchemy components
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, declarative_base
 
-# Define the database URL (SQLite in this case)
-SQLALCHEMY_DATABASE_URL = "sqlite:///./trade_orders.db"
+# Database URL for development and testing
+import os
+if os.getenv("TESTING"):
+    SQLALCHEMY_DATABASE_URL = "sqlite:///./test_trade_orders.db"
+else:
+    SQLALCHEMY_DATABASE_URL = "sqlite:///./trade_orders.db"
 
 # Create a database engine
 # `connect_args={"check_same_thread": False}` is required for SQLite to work with FastAPI

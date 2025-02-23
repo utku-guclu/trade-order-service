@@ -4,7 +4,7 @@ from . import models, schemas
 # Function to create a new order in the database
 def create_order(db: Session, order: schemas.OrderCreate):
     # Create a SQLAlchemy model instance from the Pydantic model
-    db_order = models.Order(**order.dict()) # Unpack the order object
+    db_order = models.Order(**order.model_dump()) # Unpack the order object
     
     # Add the instance to the database session
     db.add(db_order)
