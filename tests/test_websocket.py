@@ -7,8 +7,8 @@ from fastapi.testclient import TestClient
 
 # BaseURL for development and testing
 BASE_URL = os.getenv("BASE_URL", "localhost:8000")
-if os.getenv("DEV") == "true": 
-    BASE_URL = "localhost:8000"
+if os.getenv("DEV") != "true": 
+    BASE_URL = "3.86.149.73"
 
 # Function to get a JWT token
 def get_access_token(username: str, password: str):
