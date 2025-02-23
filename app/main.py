@@ -16,7 +16,7 @@ load_dotenv()
 
 # Access the secret key and algorithm from environment variables
 SECRET_KEY = os.getenv("SECRET_KEY")
-ALGORITHM = os.getenv("ALGORITHM")
+ALGORITHM = os.getenv("ALGORITHM", "HS256")
 
 # Token expiration time (e.g., 30 minutes)
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
