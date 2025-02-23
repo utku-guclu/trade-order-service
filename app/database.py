@@ -11,8 +11,8 @@ else:
     SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./trade_orders.db")
 
 # Create a database engine
-# `connect_args={"check_same_thread": False}` is required for SQLite to work with FastAPI
-# create_engine function does not include the check_same_thread option when connecting to PostgreSQL
+# `connect_args={"check_same_thread": False}` is required for SQLite to work with FastAPI 
+# `connect_args={"check_same_thread": False}` is not required for PostgreSQL
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
 # Create a SessionLocal class for database sessions
