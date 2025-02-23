@@ -12,10 +12,10 @@ if os.getenv("DEV") == "true":
 
 # Function to get a JWT token
 def get_access_token(username: str, password: str):
-    print(f"Using BASE_URL: {BASE_URL}")
-    print(f"Using username: {username}, password: {password}")
+    print(f"🚀 Using BASE_URL: {BASE_URL}")  # Debugging
     url = f"http://{BASE_URL}/token"
-    print(f"Attempting to connect to: {url}")
+    print(f"🌐 Attempting to connect to: {url}")  # 
+    
     response = requests.post(url, data={"username": username, "password": password})
     
     if response.status_code == 200:
