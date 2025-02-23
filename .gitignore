@@ -2,3 +2,4 @@
 venv/
 *.log
 .pytest_cache
+trade-order-service.pem
