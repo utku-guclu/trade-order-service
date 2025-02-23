@@ -82,6 +82,6 @@ jobs:
           # Stop and remove the existing container (if any)
           ssh -o StrictHostKeyChecking=no -i trade-order-service.pem ubuntu@${{ secrets.EC2_IP }} "docker stop trade-order-service || true && docker rm trade-order-service || true"
 
-          # Pull the Docker image and deploy the new container with the uvicorn command
+          # Pull the Docker image and deploy the new container
           ssh -o StrictHostKeyChecking=no -i trade-order-service.pem ubuntu@${{ secrets.EC2_IP }} "docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/trade-order-service"
-          ssh -o StrictHostKeyChecking=no -i trade-order-service.pem ubuntu@${{ secrets.EC2_IP }} "docker run -d -p 80:8000 --name trade-order-service ${{ secrets.DOCKER_HUB_USERNAME }}/trade-order-service uvicorn main:app --host 0.0.0.0 --port 8000"
+          ssh -o StrictHostKeyChecking=no -i trade-order-service.pem ubuntu@${{ secrets.EC2_IP }} "docker run -d -p 80:80 --name trade-order-service ${{ secrets.DOCKER_HUB_USERNAME }}/trade-order-service"
