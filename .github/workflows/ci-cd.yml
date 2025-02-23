@@ -1,0 +1,54 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run tests
+        run: |
+          pytest
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker
+        run: |
+          sudo apt-get update
+          sudo apt-get install docker.io
+          sudo systemctl start docker
+
+      - name: Build Docker image
+        run: |
+          docker build -t trade-order-service .
+
+      - name: Deploy to EC2
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > trade-order-service.pem
+          chmod 400 trade-order-service.pem
+          ssh -o StrictHostKeyChecking=no -i trade-order-service.pem ubuntu@${{ secrets.EC2_IP }} "docker stop trade-order-service || true && docker rm trade-order-service || true"
+          ssh -o StrictHostKeyChecking=no -i trade-order-service.pem ubuntu@${{ secrets.EC2_IP }} "docker run -d -p 80:80 --name trade-order-service trade-order-service"
