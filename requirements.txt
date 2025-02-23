@@ -5,3 +5,9 @@ pydantic
 pytest
 httpx
 psycopg2-binary
+websockets
+python-jose[cryptography]
+python-dotenv
+python-multipart
+requests
+pytest-asyncio
