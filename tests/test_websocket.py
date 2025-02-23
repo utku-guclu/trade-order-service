@@ -3,12 +3,13 @@ import asyncio
 import websockets
 import requests
 import pytest
+from fastapi.testclient import TestClient
 
 # BaseURL for development and testing
-if os.getenv("TESTING"):
-    BASE_URL = "localhost:8000"
+if os.getenv("DEV"):
+   BASE_URL = "localhost:8000"
 else:
-    BASE_URL = os.getenv("BASE_URL", "localhost:8000")
+   BASE_URL = os.getenv("BASE_URL", "localhost:8000")
 
 # Function to get a JWT token
 def get_access_token(username: str, password: str):

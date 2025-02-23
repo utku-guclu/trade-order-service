@@ -8,6 +8,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 from dotenv import load_dotenv  # Import load_dotenv
 from . import crud, models, schemas
+from secrets import token_hex
 from .database import SessionLocal, engine
 
 
@@ -15,8 +16,8 @@ from .database import SessionLocal, engine
 load_dotenv()
 
 # Access the secret key and algorithm from environment variables
-SECRET_KEY = os.getenv("SECRET_KEY")
-ALGORITHM = os.getenv("ALGORITHM", "HS256")
+SECRET_KEY = token_hex(32)
+ALGORITHM = "HS256"
 
 # Token expiration time (e.g., 30 minutes)
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
