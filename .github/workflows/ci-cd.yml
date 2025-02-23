@@ -34,8 +34,8 @@ jobs:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           ALGORITHM: ${{ secrets.ALGORITHM }}
           BASE_URL: ${{ secrets.BASE_URL }}
-          DEV: ${{ secrets.DEV }}
-          TESTING: true
+          DEV: "false"
+          TESTING: "true"
         run: |
           pytest
 

@@ -6,20 +6,20 @@ import pytest
 from fastapi.testclient import TestClient
 
 # BaseURL for development and testing
-if os.getenv("DEV"):
-   BASE_URL = "localhost:8000"
-else:
-   BASE_URL = os.getenv("BASE_URL", "localhost:8000")
+BASE_URL = os.getenv("BASE_URL", "localhost:8000")
+if os.getenv("DEV") == "true": 
+    BASE_URL = "localhost:8000"
 
 # Function to get a JWT token
 def get_access_token(username: str, password: str):
     url = f"http://{BASE_URL}/token"
+    print(f"Attempting to connect to: {url}")
     response = requests.post(url, data={"username": username, "password": password})
     
     if response.status_code == 200:
         return response.json()["access_token"]
     else:
-        raise Exception("Failed to get access token: " + response.text)
+       raise Exception(f"Failed to get access token: {response.text} (Status: {response.status_code})")
 
 @pytest.mark.asyncio
 async def test_websocket():
