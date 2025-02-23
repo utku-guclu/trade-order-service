@@ -49,7 +49,7 @@ jobs:
           curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
           # Set up the stable repository
-          echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
           # Install Docker
           sudo apt-get update
@@ -62,7 +62,12 @@ jobs:
 
       - name: Deploy to EC2
         run: |
+          # Save the SSH private key to a file
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > trade-order-service.pem
           chmod 400 trade-order-service.pem
+
+          # Stop and remove the existing container (if any)
           ssh -o StrictHostKeyChecking=no -i trade-order-service.pem ubuntu@${{ secrets.EC2_IP }} "docker stop trade-order-service || true && docker rm trade-order-service || true"
+
+          # Deploy the new container
           ssh -o StrictHostKeyChecking=no -i trade-order-service.pem ubuntu@${{ secrets.EC2_IP }} "docker run -d -p 80:80 --name trade-order-service trade-order-service"
